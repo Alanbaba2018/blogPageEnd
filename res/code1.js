@@ -3,17 +3,10 @@ stage.on('mousemove', e => {
   const layer = stage.getLayerByPosition(e.pos);
   stage.clearHighLightLayer();
   if (layer) {
-    layer.highLight();
+    layer.highLight({fill: false, stroke: true, weight: 0.1});
     stage.hilightLayers();
   }
 });
-function getRandomColor() {
-  const r = Math.floor(Math.random()*256);
-  const g = Math.floor(Math.random()*256);
-  const b = Math.floor(Math.random()*256);
-  const color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  return color;
-}
 let bound = null;
 const textLayerGroup = new xCanvas.LayerGroup([]);
 this.$Http.getJSONResource('china').then(({features}) => {
@@ -32,10 +25,17 @@ this.$Http.getJSONResource('china').then(({features}) => {
     }
     const { center, name } = feature.properties;
     if (name && center) {
-      textLayerGroup.addLayer(new xCanvas.IText(center, name, { fontSize: 1, color: '#000000' }));
+      textLayerGroup.addLayer(new xCanvas.IText(center, name, { fontSize: 1, color: '#000000', textAlign: 'center' }));
     }
   }
   stage.addLayer(textLayerGroup);
   stage.setView(bound.getCenter(), 5);
   stage.endBatch();
 });
+function getRandomColor() {
+  const r = Math.floor(Math.random()*256);
+  const g = Math.floor(Math.random()*256);
+  const b = Math.floor(Math.random()*256);
+  const color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+  return color;
+}
