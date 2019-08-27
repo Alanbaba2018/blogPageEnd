@@ -5,7 +5,11 @@ const router = express.Router();
 const { readJson } = require('../../util/index.js');
 
 router.get('/code/:index', async(req, res, next) => {
-  const jsStr = fs.readFileSync(path.resolve(__dirname, `../../res/code${req.params.index}.js`));
+  let filePath = path.resolve(__dirname, `../../res/code${req.params.index}.js`);
+  if (!fs.existsSync(filePath)) {
+    filePath = path.resolve(__dirname, `../../res/code${req.params.index}.ts`);
+  }
+  const jsStr = fs.readFileSync(filePath);
   res.json({code: 200, data: jsStr.toString()});
 });
 
