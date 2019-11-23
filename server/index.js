@@ -29,9 +29,10 @@ module.exports = {
       res.setHeader('Access-Control-Expose-Headers', '*');
       next();
     });
-    app.use('/agent', (req,res) =>{
+    app.use('/proxy', (req,res) =>{
       //拿到请求的路径来代理请求，并把响应的结果传给request客户端然后将目标的服务器响应的数据传回浏览器； 
-      var url = req.query.url;
+      const url = decodeURIComponent(req.query.url);
+      console.log(url)
       req.pipe(request(url)).pipe(res);
     });
     app.get('/app', (req,res) =>{
